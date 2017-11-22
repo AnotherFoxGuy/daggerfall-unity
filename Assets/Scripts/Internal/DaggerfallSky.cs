@@ -4,8 +4,8 @@
 // License:         MIT License (http://www.opensource.org/licenses/mit-license.php)
 // Source Code:     https://github.com/Interkarma/daggerfall-unity
 // Original Author: Gavin Clayton (interkarma@dfworkshop.net)
-// Contributors:    
-// 
+// Contributors:
+//
 // Notes:
 //
 
@@ -14,6 +14,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using DaggerfallConnect;
 using DaggerfallConnect.Arena2;
 using DaggerfallConnect.Utility;
@@ -25,7 +26,7 @@ namespace DaggerfallWorkshop
     /// Implementation of Daggerfall's sky backgrounds. Works in both forward and deferred rendering paths.
     /// Uses two cameras and OnPostRender in local camera for sky drawing (uses normal camera solid colour clear).
     /// Sets own camera depth to MainCamera.depth-1 so sky is drawn first.
-    /// 
+    ///
     /// DO NOT ATTACH THIS SCRIPT TO MAINCAMERA GAMEOBJECT.
     /// Attach to an empty GameObject or use the prefab provided.
     /// </summary>
@@ -72,6 +73,10 @@ namespace DaggerfallWorkshop
         CameraClearFlags initialClearFlags;
         System.Random random = new System.Random(0);
         bool showNightSky = true;
+
+        private Material skyboxEastMat;
+        private Material skyboxWestMat;
+        private GameObject skybox;
 
         SkyColors skyColors = new SkyColors();
         float starChance = 0.004f;
@@ -130,18 +135,31 @@ namespace DaggerfallWorkshop
             // My camera must not be on the same GameObject as MainCamera
             if (myCamera == mainCamera)
             {
-                DaggerfallUnity.LogMessage("DaggerfallSky must not be attached to same GameObject as MainCamera. Disabling sky.", true);
+                DaggerfallUnity.LogMessage(
+                    "DaggerfallSky must not be attached to same GameObject as MainCamera. Disabling sky.", true);
                 gameObject.SetActive(false);
                 return;
             }
 
+            skyboxEastMat = new Material(Shader.Find("Unlit/Texture"));
+            skyboxWestMat = new Material(Shader.Find("Unlit/Texture"));
+            skybox = new GameObject("SkyBox");
+            skybox.transform.localScale = Vector3.one * 100;
+
+            skybox.AddComponent<MeshFilter>().mesh = Resources.Load<Mesh>("Mesh/SkyBox");
+            skybox.AddComponent<MeshRenderer>().materials = new[] {skyboxEastMat, skyboxWestMat};
+
             // Setup cameras
             SetupCameras();
+
+            if (!DaggerfallUnity.Settings.UseModernSkybox)
+                skybox.gameObject.SetActive(false);
         }
 
         void OnEnable()
         {
-            SetupCameras();
+            if (!DaggerfallUnity.Settings.UseModernSkybox)
+                SetupCameras();
         }
 
         void OnDisable()
@@ -178,13 +196,26 @@ namespace DaggerfallWorkshop
                 lastSkyIndex = SkyIndex;
                 lastSkyFrame = SkyFrame;
                 lastNightFlag = IsNight;
+
+                if (DaggerfallUnity.Settings.UseModernSkybox)
+                {
+                    skyboxEastMat.SetTexture("_MainTex", eastTexture);
+                    skyboxWestMat.SetTexture("_MainTex", westTexture);
+                }
+
             }
+
+            if (DaggerfallUnity.Settings.UseModernSkybox)
+                skybox.transform.position = mainCamera.transform.position;
         }
 
         void OnPostRender()
         {
-            UpdateSkyRects();
-            DrawSky();
+            if (!DaggerfallUnity.Settings.UseModernSkybox)
+            {
+                UpdateSkyRects();
+                DrawSky();
+            }
         }
 
         #region Private Methods
@@ -257,7 +288,7 @@ namespace DaggerfallWorkshop
 
         private void DrawSky()
         {
-            if (!westTexture || !eastTexture)
+            if (!westTexture || !eastTexture || DaggerfallUnity.Settings.UseModernSkybox)
                 return;
 
             GL.PushMatrix();
@@ -268,6 +299,7 @@ namespace DaggerfallWorkshop
             Graphics.DrawTexture(eastRect, eastTexture, fullTextureRect, 0, 0, 0, 0, SkyTintColor * SkyColorScale, null);
 
             GL.PopMatrix();
+
         }
 
         private void PromoteToTexture(SkyColors colors, bool flip = false)
@@ -462,7 +494,7 @@ namespace DaggerfallWorkshop
             myCamera.enabled = true;
             myCamera.renderingPath = mainCamera.renderingPath;
             myCamera.cullingMask = 0;
-            myCamera.clearFlags = CameraClearFlags.SolidColor;
+            myCamera.clearFlags = CameraClearFlags.Skybox;
 
             if (AutoCameraSetup)
             {

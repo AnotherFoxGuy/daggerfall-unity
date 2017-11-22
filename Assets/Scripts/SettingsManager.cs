@@ -4,8 +4,8 @@
 // License:         MIT License (http://www.opensource.org/licenses/mit-license.php)
 // Source Code:     https://github.com/Interkarma/daggerfall-unity
 // Original Author: Gavin Clayton (interkarma@dfworkshop.net)
-// Contributors:    
-// 
+// Contributors:
+//
 // Notes:
 //
 
@@ -122,6 +122,7 @@ namespace DaggerfallWorkshop
         public bool LypyL_GameConsole { get; set; }
         public bool LypyL_ModSystem { get; set; }
         public bool MeshAndTextureReplacement { get; set; }
+        public bool UseModernSkybox { get; set; }
 
         #endregion
 
@@ -186,6 +187,7 @@ namespace DaggerfallWorkshop
             LypyL_GameConsole = GetBool(sectionEnhancements, "LypyL_GameConsole");
             LypyL_ModSystem = GetBool(sectionEnhancements, "LypyL_ModSystem");
             MeshAndTextureReplacement = GetBool(sectionEnhancements, "MeshAndTextureReplacement");
+            UseModernSkybox = GetBool(sectionEnhancements, "UseModernSkybox");
         }
 
         /// <summary>
@@ -243,6 +245,7 @@ namespace DaggerfallWorkshop
             SetBool(sectionEnhancements, "LypyL_GameConsole", LypyL_GameConsole);
             SetBool(sectionEnhancements, "LypyL_ModSystem", LypyL_ModSystem);
             SetBool(sectionEnhancements, "MeshAndTextureReplacement", MeshAndTextureReplacement);
+            SetBool(sectionEnhancements, "UseModernSkybox", UseModernSkybox);
 
             // Write settings to persistent file
             WriteSettingsFile();

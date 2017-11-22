@@ -4,8 +4,8 @@
 // License:         MIT License (http://www.opensource.org/licenses/mit-license.php)
 // Source Code:     https://github.com/Interkarma/daggerfall-unity
 // Original Author: Gavin Clayton (interkarma@dfworkshop.net)
-// Contributors:    
-// 
+// Contributors:
+//
 // Notes:
 //
 
@@ -64,6 +64,7 @@ namespace DaggerfallWorkshop.Game.UserInterfaceWindows
         Checkbox leftHandWeapons;
         Checkbox playerNudity;
         Checkbox clickToAttack;
+        Checkbox useModernSkybox;
 
         Color unselectedTextColor = new Color(0.6f, 0.6f, 0.6f, 1f);
         Color selectedTextColor = new Color(0.0f, 0.8f, 0.0f, 1.0f);
@@ -450,6 +451,7 @@ namespace DaggerfallWorkshop.Game.UserInterfaceWindows
             // TODO: Might rework this, but could still be useful for certain core mods later
             x = 165;
             optionPos = 20;
+            useModernSkybox = AddOption(x, "Use Modern Skybox", "Use a 3D skybox intead of a paralactst texture", DaggerfallUnity.Settings.UseModernSkybox);
             //bool exampleModCheckbox = AddOption(x, "Example", "Example built-in mod", DaggerfallUnity.Settings.ExampleModOption);
 
             // Add mod note
@@ -704,6 +706,7 @@ namespace DaggerfallWorkshop.Game.UserInterfaceWindows
             DaggerfallUnity.Settings.Handedness = GetHandedness(leftHandWeapons.IsChecked);
             DaggerfallUnity.Settings.PlayerNudity = playerNudity.IsChecked;
             DaggerfallUnity.Settings.ClickToAttack = clickToAttack.IsChecked;
+            DaggerfallUnity.Settings.UseModernSkybox = useModernSkybox.IsChecked;
 
             DaggerfallUnity.Settings.SaveSettings();
             moveNextStage = true;
