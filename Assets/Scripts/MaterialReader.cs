@@ -4,8 +4,8 @@
 // License:         MIT License (http://www.opensource.org/licenses/mit-license.php)
 // Source Code:     https://github.com/Interkarma/daggerfall-unity
 // Original Author: Gavin Clayton (interkarma@dfworkshop.net)
-// Contributors:    
-// 
+// Contributors:
+//
 // Notes:
 //
 
@@ -72,7 +72,7 @@ namespace DaggerfallWorkshop
         //public const int UnusedKeyGroup5 = 4096;
 
         // Shader names
-        public const string _StandardShaderName = "Standard";
+        public const string _StandardShaderName = "Standard (Specular setup)";
         public const string _DaggerfallTilemapShaderName = "Daggerfall/Tilemap";
         public const string _DaggerfallTilemapTextureArrayShaderName = "Daggerfall/TilemapTextureArray";
         public const string _DaggerfallBillboardShaderName = "Daggerfall/Billboard";
@@ -176,6 +176,7 @@ namespace DaggerfallWorkshop
             // Create material
             Shader shader = Shader.Find(_StandardShaderName);
             Material material = new Material(shader);
+            material.SetColor("_SpecColor", Color.black);
 
             // Set blend mode
             SetBlendMode(material, blendMode, smoothnessChannel, metallic, glossiness);
@@ -564,7 +565,7 @@ namespace DaggerfallWorkshop
 
             return material;
         }
-        
+
         /// <summary>
         /// Gets Unity Material from Daggerfall terrain using texture arrays.
         /// </summary>

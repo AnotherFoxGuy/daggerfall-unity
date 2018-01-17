@@ -4,8 +4,8 @@
 // License:         MIT License (http://www.opensource.org/licenses/mit-license.php)
 // Source Code:     https://github.com/Interkarma/daggerfall-unity
 // Original Author: TheLacus
-// Contributors:    
-// 
+// Contributors:
+//
 // Notes:
 //
 
@@ -15,7 +15,6 @@ using System.Globalization;
 using System.Reflection;
 using UnityEngine;
 using IniParser.Model;
-using DaggerfallWorkshop.Utility;
 
 namespace DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings
 {
@@ -194,16 +193,16 @@ namespace DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings
         /// </summary>
         /// <param name="section">Name of section.</param>
         /// <param name="name">Name of key.</param>
-        public Tuple<int, int> GetTupleInt(string section, string name)
+        public DaggerfallWorkshop.Utility.Tuple<int, int> GetTupleInt(string section, string name)
         {
             int first, second;
             var tuple = GetTuple(section, name);
             if (int.TryParse(tuple.First, out first) && int.TryParse(tuple.Second, out second))
-                return new Tuple<int, int>(first, second);
+                return new DaggerfallWorkshop.Utility.Tuple<int, int>(first, second);
 
             ModSettingsKey key;
             if (config.Key(section, name, ModSettingsKey.KeyType.Tuple, out key))
-                return new Tuple<int, int>(key.tuple.first, key.tuple.second);
+                return new DaggerfallWorkshop.Utility.Tuple<int, int>(key.tuple.first, key.tuple.second);
 
             throw NewMissingKeyException(section, name);
         }
@@ -213,16 +212,16 @@ namespace DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings
         /// </summary>
         /// <param name="section">Name of section.</param>
         /// <param name="name">Name of key.</param>
-        public Tuple<float, float> GetTupleFloat(string section, string name)
+        public DaggerfallWorkshop.Utility.Tuple<float, float> GetTupleFloat(string section, string name)
         {
             float first, second;
             var tuple = GetTuple(section, name);
             if (float.TryParse(tuple.First, out first) && float.TryParse(tuple.Second, out second))
-                return new Tuple<float, float>(first, second);
+                return new DaggerfallWorkshop.Utility.Tuple<float, float>(first, second);
 
             ModSettingsKey key;
             if (config.Key(section, name, ModSettingsKey.KeyType.FloatTuple, out key))
-                return new Tuple<float, float>(key.tuple.first, key.tuple.second);
+                return new DaggerfallWorkshop.Utility.Tuple<float, float>(key.tuple.first, key.tuple.second);
 
             throw NewMissingKeyException(section, name);
         }
@@ -294,9 +293,9 @@ namespace DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings
                 return GetFloat(section, name);
             else if (type == typeof(bool))
                 return GetBool(section, name);
-            else if (type == typeof(Tuple<int, int>))
+            else if (type == typeof(DaggerfallWorkshop.Utility.Tuple<int, int>))
                 return GetTupleInt(section, name);
-            else if (type == typeof(Tuple<float, float>))
+            else if (type == typeof(DaggerfallWorkshop.Utility.Tuple<float, float>))
                 return GetTupleFloat(section, name);
             if (type == typeof(Color))
                 return GetColor(section, name);
@@ -304,15 +303,15 @@ namespace DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings
             return null;
         }
 
-        private Tuple<string, string> GetTuple(string section, string name)
+        private DaggerfallWorkshop.Utility.Tuple<string, string> GetTuple(string section, string name)
         {
             try
             {
                 string text = GetValue(section, name);
                 int index = text.IndexOf(ModSettingsReader.tupleDelimiterChar);
-                return new Tuple<string, string>(text.Substring(0, index), text.Substring(index + ModSettingsReader.tupleDelimiterChar.Length));
+                return new DaggerfallWorkshop.Utility.Tuple<string, string>(text.Substring(0, index), text.Substring(index + ModSettingsReader.tupleDelimiterChar.Length));
             }
-            catch { return new Tuple<string, string>(string.Empty, string.Empty); }
+            catch { return new DaggerfallWorkshop.Utility.Tuple<string, string>(string.Empty, string.Empty); }
         }
 
         /// <summary>

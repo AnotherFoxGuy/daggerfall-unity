@@ -15,7 +15,7 @@ public class PostProcessBuild
 
         if (target == BuildTarget.StandaloneWindows || target == BuildTarget.StandaloneWindows64 ||
             target == BuildTarget.StandaloneLinux || target == BuildTarget.StandaloneLinux64 || target == BuildTarget.StandaloneLinuxUniversal ||
-            target == BuildTarget.StandaloneOSXIntel || target == BuildTarget.StandaloneOSXIntel64 || target == BuildTarget.StandaloneOSXUniversal)
+            target == BuildTarget.StandaloneOSXIntel || target == BuildTarget.StandaloneOSXIntel64 || target == BuildTarget.StandaloneOSX)
         {
             // Get build path
             string pureBuildPath = Path.GetDirectoryName(pathToBuiltProject);

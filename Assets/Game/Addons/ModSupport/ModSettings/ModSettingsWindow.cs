@@ -4,12 +4,11 @@
 // License:         MIT License (http://www.opensource.org/licenses/mit-license.php)
 // Source Code:     https://github.com/Interkarma/daggerfall-unity
 // Original Author: TheLacus
-// Contributors:    
-// 
+// Contributors:
+//
 // Notes:
 //
 
-using System;
 using System.Linq;
 using System.Collections.Generic;
 using IniParser.Model;
@@ -629,7 +628,7 @@ namespace DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings
 
             presetPicker.OnPresetPicked += PresetPicker_OnPresetPicked;
             presetPicker.OnCreatePreset += PresetPicker_OnCreatePreset;
-            uiManager.PushWindow(presetPicker); 
+            uiManager.PushWindow(presetPicker);
         }
 
         private void PresetPicker_OnPresetPicked(int index)
@@ -661,4 +660,4 @@ namespace DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings
 
         #endregion
     }
-}   
+}
